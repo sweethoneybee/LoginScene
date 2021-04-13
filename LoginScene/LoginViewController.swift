@@ -37,6 +37,10 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
         // setupUI()
     }
 
+    // func setupUI() {}
+    
+    // MARK:- Keyboard
+    // Show
     @objc func keyboardWillShow(_ notification: Notification) {
         guard let keyboardFrameBegin = notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue else { return }
         let keyboardFrameBeginRect = keyboardFrameBegin.cgRectValue
@@ -50,6 +54,7 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
         self.keyboardShown = true
     }
     
+    // Hide
     @objc func keyboardWillHide(_ notification: Notification) {
         if self.keyboardShown && logoInvisible {
             animateUI(0)
@@ -57,6 +62,7 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
         self.keyboardShown = false
     }
     
+    // Disable
     @objc func tapContentView() {
         if self.keyboardShown == true {
             self.view.endEditing(true)
@@ -76,7 +82,28 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
         logoInvisible = !logoInvisible
     }
     
+    // MARK:- IBAction
+    @IBAction func didTapLoginButton() {
+        self.login()
+    }
     
-
+    // MARK:- Functions
+    func login() {
+        let alert = UIAlertController(title: nil, message: "로그인버튼누름", preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: "확인", style: .default))
+        self.present(alert, animated: true)
+    }
+    
+    // MARK:- UITextFieldDelegate
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        if textField == self.userIdTextField {
+            textField.resignFirstResponder()
+            self.passwordTextField.becomeFirstResponder()
+        } else {
+            self.login()
+        }
+        
+        return true
+    }
 }
 
